@@ -13,14 +13,33 @@ export function activate(context: vscode.ExtensionContext) {
     constructor(
       public readonly resourceUri: vscode.Uri,
       public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-      public readonly type: "file" | "folder"
+      public readonly type: "file" | "folder",
+      public readonly showFullPath: boolean = false,
+      public readonly isPinned: boolean = false
     ) {
       super(resourceUri, collapsibleState)
-      this.label = path.basename(resourceUri.fsPath)
-      this.contextValue = type
+
+      if (showFullPath && type === "folder") {
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(resourceUri)
+        if (workspaceFolder) {
+          const relativePath = path.relative(
+            workspaceFolder.uri.fsPath,
+            resourceUri.fsPath
+          )
+          this.label = `${relativePath}`
+          this.description = workspaceFolder.name
+        }
+      } else {
+        this.label = path.basename(resourceUri.fsPath)
+      }
+
+      // isPinned 상태에 따라 contextValue 설정
+      this.contextValue = isPinned ? `${type}-pinned` : type
+
+      // 핀 상태에 따라 아이콘 변경
       this.iconPath =
         type === "folder"
-          ? new vscode.ThemeIcon("folder")
+          ? new vscode.ThemeIcon(isPinned ? "pinned" : "folder")
           : new vscode.ThemeIcon("file")
 
       if (type === "file") {
@@ -44,6 +63,8 @@ export function activate(context: vscode.ExtensionContext) {
     > = this._onDidChangeTreeData.event
 
     private searchText: string = ""
+    private pinnedFolders: Set<string> = new Set()
+    private pinnedFoldersOrder: string[] = []
 
     constructor() {
       // 파일 시스템 변경 감지
@@ -91,7 +112,8 @@ export function activate(context: vscode.ExtensionContext) {
                 new FileExplorerItem(
                   uri,
                   vscode.TreeItemCollapsibleState.Collapsed,
-                  "folder"
+                  "folder",
+                  true
                 )
               )
             }
@@ -111,31 +133,42 @@ export function activate(context: vscode.ExtensionContext) {
         console.log("getChildren 호출됨, 검색어:", this.searchText)
 
         if (!element) {
-          // 루트 레벨일 때
           const workspaceFolders = vscode.workspace.workspaceFolders
           if (!workspaceFolders) {
             return []
           }
 
-          if (this.searchText) {
-            // 검색어가 있을 때는 모든 매칭되는 폴더를 보여줌
-            let allFolders: FileExplorerItem[] = []
-            for (const folder of workspaceFolders) {
-              const folders = await this.getAllFolders(folder.uri)
-              allFolders = allFolders.concat(folders)
-            }
-            return allFolders
+          let items: FileExplorerItem[] = []
+
+          // 고정된 폴더들 먼저 표시
+          for (const pinnedPath of this.pinnedFoldersOrder) {
+            const uri = vscode.Uri.file(pinnedPath)
+            items.push(
+              new FileExplorerItem(
+                uri,
+                vscode.TreeItemCollapsibleState.Collapsed,
+                "folder",
+                true,
+                true // isPinned
+              )
+            )
           }
 
-          // 검색어가 없을 때는 워크스페이스 폴더들만 보여줌
-          return workspaceFolders.map(
-            (folder) =>
-              new FileExplorerItem(
-                folder.uri,
-                vscode.TreeItemCollapsibleState.Expanded,
-                "folder"
+          if (this.searchText) {
+            // 검색 결과에서 이미 고정된 폴더는 제외
+            let searchResults: FileExplorerItem[] = []
+            for (const folder of workspaceFolders) {
+              const folders = await this.getAllFolders(folder.uri)
+              searchResults = searchResults.concat(
+                folders.filter(
+                  (f) => !this.pinnedFolders.has(f.resourceUri.fsPath)
+                )
               )
-          )
+            }
+            items = items.concat(searchResults)
+          }
+
+          return items
         }
 
         // 하위 항목들 (검색어 유무와 관계없이 모두 표시)
@@ -182,6 +215,52 @@ export function activate(context: vscode.ExtensionContext) {
         return []
       }
     }
+
+    pinFolder(folder: FileExplorerItem) {
+      const path = folder.resourceUri.fsPath
+      this.pinnedFolders.add(path)
+      if (!this.pinnedFoldersOrder.includes(path)) {
+        this.pinnedFoldersOrder.push(path)
+      }
+      this.refresh()
+    }
+
+    unpinFolder(folder: FileExplorerItem) {
+      const path = folder.resourceUri.fsPath
+      this.pinnedFolders.delete(path)
+      this.pinnedFoldersOrder = this.pinnedFoldersOrder.filter(
+        (p) => p !== path
+      )
+      this.refresh()
+    }
+
+    reorderPinnedFolders(sourceIndex: number, targetIndex: number) {
+      const item = this.pinnedFoldersOrder[sourceIndex]
+      this.pinnedFoldersOrder.splice(sourceIndex, 1)
+      this.pinnedFoldersOrder.splice(targetIndex, 0, item)
+      this.refresh()
+    }
+
+    // getter 추가
+    getPinnedFoldersOrder(): string[] {
+      return this.pinnedFoldersOrder
+    }
+
+    moveItemUp(item: FileExplorerItem) {
+      const path = item.resourceUri.fsPath
+      const index = this.pinnedFoldersOrder.indexOf(path)
+      if (index > 0) {
+        this.reorderPinnedFolders(index, index - 1)
+      }
+    }
+
+    moveItemDown(item: FileExplorerItem) {
+      const path = item.resourceUri.fsPath
+      const index = this.pinnedFoldersOrder.indexOf(path)
+      if (index < this.pinnedFoldersOrder.length - 1) {
+        this.reorderPinnedFolders(index, index + 1)
+      }
+    }
   }
 
   const explorerProvider = new FilteredExplorerProvider()
@@ -189,12 +268,7 @@ export function activate(context: vscode.ExtensionContext) {
   // TreeView 등록
   const treeView = vscode.window.createTreeView("filteredExplorerView", {
     treeDataProvider: explorerProvider,
-    canSelectMany: true,
-    dragAndDropController: {
-      // 드래그 앤 드롭 지원
-      dropMimeTypes: ["text/uri-list"],
-      dragMimeTypes: ["text/uri-list"],
-    },
+    canSelectMany: false, // 드래그 앤 드롭 관련 옵션 제거
   })
 
   // 검색 명령어 등록
@@ -213,7 +287,42 @@ export function activate(context: vscode.ExtensionContext) {
     }
   )
 
-  context.subscriptions.push(searchCommand)
+  let pinCommand = vscode.commands.registerCommand(
+    "filtered-explorer.pinFolder",
+    (folder: FileExplorerItem) => {
+      explorerProvider.pinFolder(folder)
+    }
+  )
+
+  let unpinCommand = vscode.commands.registerCommand(
+    "filtered-explorer.unpinFolder",
+    (folder: FileExplorerItem) => {
+      explorerProvider.unpinFolder(folder)
+    }
+  )
+
+  // 이동 명령어 등록
+  let moveUpCommand = vscode.commands.registerCommand(
+    "filtered-explorer.moveUp",
+    (item: FileExplorerItem) => {
+      explorerProvider.moveItemUp(item)
+    }
+  )
+
+  let moveDownCommand = vscode.commands.registerCommand(
+    "filtered-explorer.moveDown",
+    (item: FileExplorerItem) => {
+      explorerProvider.moveItemDown(item)
+    }
+  )
+
+  context.subscriptions.push(
+    searchCommand,
+    pinCommand,
+    unpinCommand,
+    moveUpCommand,
+    moveDownCommand
+  )
 }
 
 // This method is called when your extension is deactivated
