@@ -39,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
       // 핀 상태에 따라 아이콘 변경
       this.iconPath =
         type === "folder"
-          ? new vscode.ThemeIcon(isPinned ? "pinned" : "folder")
+          ? new vscode.ThemeIcon(isPinned ? "bookmark" : "folder")
           : new vscode.ThemeIcon("file")
 
       if (type === "file") {
@@ -96,13 +96,12 @@ export function activate(context: vscode.ExtensionContext) {
         let items: FileExplorerItem[] = []
 
         for (const [name, type] of entries) {
-          // 숨김 파일/폴더 제외
-          if (name.startsWith(".")) {
+          // node_modules 폴더와 숨김 파일/폴더 제외
+          if (name === "node_modules" || name.startsWith(".")) {
             continue
           }
 
           const uri = vscode.Uri.joinPath(parentUri, name)
-
           if (type === vscode.FileType.Directory) {
             if (
               !this.searchText ||

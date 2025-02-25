@@ -51,7 +51,7 @@
         {
           "id": "filtered-explorer",
           "title": "필터링된 탐색기",
-          "icon": "$(files)"
+          "icon": "$(folder)"
         }
       ]
     },
@@ -60,7 +60,7 @@
         {
           "id": "filteredExplorerView",
           "name": "필터링된 탐색기",
-          "icon": "$(files)"
+          "icon": "$(folder)"
         }
       ]
     },
