@@ -1,0 +1,11 @@
+{
+  "command.searchFolders.title": "Filter Folders",
+  "command.pinFolder.title": "Pin Folder",
+  "command.unpinFolder.title": "Unpin Folder",
+  "command.moveUp.title": "Move Up",
+  "command.moveDown.title": "Move Down",
+  "command.pinFolderFromExplorer.title": "Pin to Filtered Explorer",
+  "command.reset.title": "Reset",
+  "viewsContainer.filteredExplorer.title": "Filtered Explorer",
+  "view.filteredExplorer.title": "Filtered Explorer"
+}

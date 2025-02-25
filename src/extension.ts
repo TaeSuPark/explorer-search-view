@@ -7,7 +7,6 @@ import * as path from "path"
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   // 확장 프로그램이 활성화될 때 실행되는 코드
-  console.log("필터링된 파일 탐색기가 활성화되었습니다.")
 
   class FileExplorerItem extends vscode.TreeItem {
     constructor(
@@ -79,7 +78,6 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     setSearchText(text: string) {
-      console.log("검색어:", text)
       this.searchText = text.trim()
       this._onDidChangeTreeData.fire()
     }
@@ -122,15 +120,12 @@ export function activate(context: vscode.ExtensionContext) {
         }
         return items
       } catch (error) {
-        console.error("getAllFolders 에러:", error)
         return []
       }
     }
 
     async getChildren(element?: FileExplorerItem): Promise<FileExplorerItem[]> {
       try {
-        console.log("getChildren 호출됨, 검색어:", this.searchText)
-
         if (!element) {
           const workspaceFolders = vscode.workspace.workspaceFolders
           if (!workspaceFolders) {
@@ -171,7 +166,6 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         // 하위 항목들 (검색어 유무와 관계없이 모두 표시)
-        console.log("하위 항목 탐색:", element.resourceUri.fsPath)
         const entries = await vscode.workspace.fs.readDirectory(
           element.resourceUri
         )
@@ -210,7 +204,6 @@ export function activate(context: vscode.ExtensionContext) {
           return a.contextValue === "folder" ? -1 : 1
         })
       } catch (error) {
-        console.error("getChildren 에러:", error)
         return []
       }
     }
@@ -267,6 +260,13 @@ export function activate(context: vscode.ExtensionContext) {
       if (!this.pinnedFoldersOrder.includes(path)) {
         this.pinnedFoldersOrder.push(path)
       }
+      this.refresh()
+    }
+
+    reset() {
+      this.searchText = ""
+      this.pinnedFolders.clear()
+      this.pinnedFoldersOrder = []
       this.refresh()
     }
   }
@@ -331,13 +331,21 @@ export function activate(context: vscode.ExtensionContext) {
     }
   )
 
+  let resetCommand = vscode.commands.registerCommand(
+    "filtered-explorer.reset",
+    () => {
+      explorerProvider.reset()
+    }
+  )
+
   context.subscriptions.push(
     searchCommand,
     pinCommand,
     unpinCommand,
     moveUpCommand,
     moveDownCommand,
-    pinFromExplorerCommand
+    pinFromExplorerCommand,
+    resetCommand
   )
 }
 

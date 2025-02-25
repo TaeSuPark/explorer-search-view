@@ -17,40 +17,45 @@
     "commands": [
       {
         "command": "filtered-explorer.searchFolders",
-        "title": "폴더 필터링",
+        "title": "%command.searchFolders.title%",
         "icon": "$(search)"
       },
       {
         "command": "filtered-explorer.pinFolder",
-        "title": "폴더 고정하기",
+        "title": "%command.pinFolder.title%",
         "icon": "$(pin)"
       },
       {
         "command": "filtered-explorer.unpinFolder",
-        "title": "고정 해제",
+        "title": "%command.unpinFolder.title%",
         "icon": "$(pinned)"
       },
       {
         "command": "filtered-explorer.moveUp",
-        "title": "위로 이동",
+        "title": "%command.moveUp.title%",
         "icon": "$(arrow-up)"
       },
       {
         "command": "filtered-explorer.moveDown",
-        "title": "아래로 이동",
+        "title": "%command.moveDown.title%",
         "icon": "$(arrow-down)"
       },
       {
         "command": "filtered-explorer.pinFolderFromExplorer",
-        "title": "폴더탐색기 고정하기",
+        "title": "%command.pinFolderFromExplorer.title%",
         "icon": "$(pin)"
+      },
+      {
+        "command": "filtered-explorer.reset",
+        "title": "%command.reset.title%",
+        "icon": "$(clear-all)"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
           "id": "filtered-explorer",
-          "title": "필터링된 탐색기",
+          "title": "%viewsContainer.filteredExplorer.title%",
           "icon": "$(folder)"
         }
       ]
@@ -67,9 +72,14 @@
     "menus": {
       "view/title": [
         {
+          "command": "filtered-explorer.reset",
+          "when": "view == filteredExplorerView",
+          "group": "navigation@1"
+        },
+        {
           "command": "filtered-explorer.searchFolders",
           "when": "view == filteredExplorerView",
-          "group": "navigation"
+          "group": "navigation@2"
         }
       ],
       "commandPalette": [
