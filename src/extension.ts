@@ -261,6 +261,15 @@ export function activate(context: vscode.ExtensionContext) {
         this.reorderPinnedFolders(index, index + 1)
       }
     }
+
+    pinFolderFromExplorer(uri: vscode.Uri) {
+      const path = uri.fsPath
+      this.pinnedFolders.add(path)
+      if (!this.pinnedFoldersOrder.includes(path)) {
+        this.pinnedFoldersOrder.push(path)
+      }
+      this.refresh()
+    }
   }
 
   const explorerProvider = new FilteredExplorerProvider()
@@ -316,12 +325,20 @@ export function activate(context: vscode.ExtensionContext) {
     }
   )
 
+  let pinFromExplorerCommand = vscode.commands.registerCommand(
+    "filtered-explorer.pinFolderFromExplorer",
+    (uri: vscode.Uri) => {
+      explorerProvider.pinFolderFromExplorer(uri)
+    }
+  )
+
   context.subscriptions.push(
     searchCommand,
     pinCommand,
     unpinCommand,
     moveUpCommand,
-    moveDownCommand
+    moveDownCommand,
+    pinFromExplorerCommand
   )
 }
 

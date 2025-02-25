@@ -39,6 +39,11 @@
         "command": "filtered-explorer.moveDown",
         "title": "아래로 이동",
         "icon": "$(arrow-down)"
+      },
+      {
+        "command": "filtered-explorer.pinFolderFromExplorer",
+        "title": "폴더탐색기 고정하기",
+        "icon": "$(pin)"
       }
     ],
     "viewsContainers": {
@@ -93,6 +98,13 @@
           "command": "filtered-explorer.moveDown",
           "when": "view == filteredExplorerView && viewItem == folder-pinned",
           "group": "inline"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "filtered-explorer.pinFolderFromExplorer",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation"
         }
       ]
     }
