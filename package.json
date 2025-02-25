@@ -64,7 +64,7 @@
       "filtered-explorer": [
         {
           "id": "filteredExplorerView",
-          "name": "필터링된 탐색기",
+          "name": "%view.filteredExplorer.title%",
           "icon": "$(folder)"
         }
       ]
