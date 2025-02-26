@@ -1,9 +1,21 @@
 # Change Log
 
-All notable changes to the "explorer-search-view" extension will be documented in this file.
+All notable changes to the Folder Selector extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [0.0.1] - 2025-02-25
 
-## [Unreleased]
+### Added
 
-- Initial release
+- Folder search and filtering functionality
+- Folder pinning and management features
+  - Pin/unpin folders
+  - Change order of pinned folders (move up/down)
+- File system integration
+  - Pin folders directly from the default explorer
+- Added Filtered Explorer view to the activity bar
+- Multi-language support (English, Korean)
+
+### Technical Features
+
+- File system change detection and automatic updates
+- Persistent pinned folder state (between sessions)
