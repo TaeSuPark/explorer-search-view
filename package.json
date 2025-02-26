@@ -1,7 +1,7 @@
 {
-  "name": "filtered-explorer",
-  "displayName": "Filtered Explorer",
-  "description": "폴더 이름으로 필터링되는 파일 탐색기",
+  "name": "folder-selector",
+  "displayName": "Folder Selector",
+  "description": "폴더를 쉽게 검색하고 고정할 수 있는 도구",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.80.0"

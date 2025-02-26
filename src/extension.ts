@@ -6,8 +6,6 @@ import * as path from "path"
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  // 확장 프로그램이 활성화될 때 실행되는 코드
-
   class FileExplorerItem extends vscode.TreeItem {
     constructor(
       public readonly resourceUri: vscode.Uri,
@@ -285,8 +283,7 @@ export function activate(context: vscode.ExtensionContext) {
     async () => {
       const searchText = await vscode.window.showInputBox({
         placeHolder: "검색할 폴더 이름을 입력하세요",
-        prompt:
-          "필터링할 폴더 이름을 입력하세요. 빈 값을 입력하면 모든 폴더가 표시됩니다.",
+        prompt: "필터링할 폴더 이름을 입력하세요.",
       })
 
       if (searchText !== undefined) {
