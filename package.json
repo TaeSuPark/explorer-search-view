@@ -3,11 +3,27 @@
   "displayName": "Folder Selector",
   "description": "폴더를 쉽게 검색하고 고정할 수 있는 도구",
   "version": "0.0.1",
+  "publisher": "TaeSuPark",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TaeSuPark/vsc-extension-folder-selector.git"
+  },
+  "license": "MIT",
+  "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.80.0"
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "folder",
+    "explorer",
+    "search",
+    "pin",
+    "unpin",
+    "folder-selector",
+    "bookmark"
   ],
   "activationEvents": [
     "onStartupFinished"
