@@ -272,18 +272,18 @@ export function activate(context: vscode.ExtensionContext) {
   const explorerProvider = new FilteredExplorerProvider()
 
   // TreeView 등록
-  const treeView = vscode.window.createTreeView("filteredExplorerView", {
+  const treeView = vscode.window.createTreeView("folderSelectorView", {
     treeDataProvider: explorerProvider,
-    canSelectMany: false, // 드래그 앤 드롭 관련 옵션 제거
+    canSelectMany: false,
   })
 
   // 검색 명령어 등록
   let searchCommand = vscode.commands.registerCommand(
-    "filtered-explorer.searchFolders",
+    "folder-selector.searchFolders",
     async () => {
       const searchText = await vscode.window.showInputBox({
         placeHolder: "검색할 폴더 이름을 입력하세요",
-        prompt: "필터링할 폴더 이름을 입력하세요.",
+        prompt: "검색할 폴더 이름을 입력하세요.",
       })
 
       if (searchText !== undefined) {
@@ -293,14 +293,14 @@ export function activate(context: vscode.ExtensionContext) {
   )
 
   let pinCommand = vscode.commands.registerCommand(
-    "filtered-explorer.pinFolder",
+    "folder-selector.pinFolder",
     (folder: FileExplorerItem) => {
       explorerProvider.pinFolder(folder)
     }
   )
 
   let unpinCommand = vscode.commands.registerCommand(
-    "filtered-explorer.unpinFolder",
+    "folder-selector.unpinFolder",
     (folder: FileExplorerItem) => {
       explorerProvider.unpinFolder(folder)
     }
@@ -308,28 +308,28 @@ export function activate(context: vscode.ExtensionContext) {
 
   // 이동 명령어 등록
   let moveUpCommand = vscode.commands.registerCommand(
-    "filtered-explorer.moveUp",
+    "folder-selector.moveUp",
     (item: FileExplorerItem) => {
       explorerProvider.moveItemUp(item)
     }
   )
 
   let moveDownCommand = vscode.commands.registerCommand(
-    "filtered-explorer.moveDown",
+    "folder-selector.moveDown",
     (item: FileExplorerItem) => {
       explorerProvider.moveItemDown(item)
     }
   )
 
   let pinFromExplorerCommand = vscode.commands.registerCommand(
-    "filtered-explorer.pinFolderFromExplorer",
+    "folder-selector.pinFolderFromExplorer",
     (uri: vscode.Uri) => {
       explorerProvider.pinFolderFromExplorer(uri)
     }
   )
 
   let resetCommand = vscode.commands.registerCommand(
-    "filtered-explorer.reset",
+    "folder-selector.reset",
     () => {
       explorerProvider.reset()
     }

@@ -32,37 +32,37 @@
   "contributes": {
     "commands": [
       {
-        "command": "filtered-explorer.searchFolders",
+        "command": "folder-selector.searchFolders",
         "title": "%command.searchFolders.title%",
         "icon": "$(search)"
       },
       {
-        "command": "filtered-explorer.pinFolder",
+        "command": "folder-selector.pinFolder",
         "title": "%command.pinFolder.title%",
         "icon": "$(pin)"
       },
       {
-        "command": "filtered-explorer.unpinFolder",
+        "command": "folder-selector.unpinFolder",
         "title": "%command.unpinFolder.title%",
         "icon": "$(pinned)"
       },
       {
-        "command": "filtered-explorer.moveUp",
+        "command": "folder-selector.moveUp",
         "title": "%command.moveUp.title%",
         "icon": "$(arrow-up)"
       },
       {
-        "command": "filtered-explorer.moveDown",
+        "command": "folder-selector.moveDown",
         "title": "%command.moveDown.title%",
         "icon": "$(arrow-down)"
       },
       {
-        "command": "filtered-explorer.pinFolderFromExplorer",
+        "command": "folder-selector.pinFolderFromExplorer",
         "title": "%command.pinFolderFromExplorer.title%",
         "icon": "$(pin)"
       },
       {
-        "command": "filtered-explorer.reset",
+        "command": "folder-selector.reset",
         "title": "%command.reset.title%",
         "icon": "$(clear-all)"
       }
@@ -70,17 +70,17 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "filtered-explorer",
-          "title": "%viewsContainer.filteredExplorer.title%",
+          "id": "folder-selector",
+          "title": "%viewsContainer.folderSelector.title%",
           "icon": "$(folder)"
         }
       ]
     },
     "views": {
-      "filtered-explorer": [
+      "folder-selector": [
         {
-          "id": "filteredExplorerView",
-          "name": "%view.filteredExplorer.title%",
+          "id": "folderSelectorView",
+          "name": "%view.folderSelector.title%",
           "icon": "$(folder)"
         }
       ]
@@ -88,47 +88,47 @@
     "menus": {
       "view/title": [
         {
-          "command": "filtered-explorer.reset",
-          "when": "view == filteredExplorerView",
+          "command": "folder-selector.reset",
+          "when": "view == folderSelectorView",
           "group": "navigation@1"
         },
         {
-          "command": "filtered-explorer.searchFolders",
-          "when": "view == filteredExplorerView",
+          "command": "folder-selector.searchFolders",
+          "when": "view == folderSelectorView",
           "group": "navigation@2"
         }
       ],
       "commandPalette": [
         {
-          "command": "filtered-explorer.searchFolders",
+          "command": "folder-selector.searchFolders",
           "title": "폴더 검색"
         }
       ],
       "view/item/context": [
         {
-          "command": "filtered-explorer.pinFolder",
-          "when": "view == filteredExplorerView && viewItem == folder",
+          "command": "folder-selector.pinFolder",
+          "when": "view == folderSelectorView && viewItem == folder",
           "group": "inline"
         },
         {
-          "command": "filtered-explorer.unpinFolder",
-          "when": "view == filteredExplorerView && viewItem == folder-pinned",
+          "command": "folder-selector.unpinFolder",
+          "when": "view == folderSelectorView && viewItem == folder-pinned",
           "group": "inline"
         },
         {
-          "command": "filtered-explorer.moveUp",
-          "when": "view == filteredExplorerView && viewItem == folder-pinned",
+          "command": "folder-selector.moveUp",
+          "when": "view == folderSelectorView && viewItem == folder-pinned",
           "group": "inline"
         },
         {
-          "command": "filtered-explorer.moveDown",
-          "when": "view == filteredExplorerView && viewItem == folder-pinned",
+          "command": "folder-selector.moveDown",
+          "when": "view == folderSelectorView && viewItem == folder-pinned",
           "group": "inline"
         }
       ],
       "explorer/context": [
         {
-          "command": "filtered-explorer.pinFolderFromExplorer",
+          "command": "folder-selector.pinFolderFromExplorer",
           "when": "explorerResourceIsFolder",
           "group": "navigation"
         }

@@ -13,7 +13,7 @@ Folder Selector is a VS Code extension that allows you to easily navigate and ma
 
 ### Searching Folders
 
-1. Click the "Filtered Explorer" icon in the activity bar.
+1. Click the "Folder Selector" icon in the activity bar.
 2. Click the search icon at the top of the view or run the "Filter Folders" command from the command palette.
 3. Enter the folder name to search, and all matching folders will be displayed.
 
@@ -32,7 +32,7 @@ Folder Selector is a VS Code extension that allows you to easily navigate and ma
 ### Pinning Directly from Explorer
 
 1. Right-click on a folder in VS Code's default file explorer.
-2. Select "Pin to Filtered Explorer" from the context menu.
+2. Select "Pin to Folder Selector" from the context menu.
 
 ## Requirements
 
@@ -79,7 +79,7 @@ Distributed under the MIT License.
 
 ### 폴더 검색
 
-1. 활동 표시줄에서 "필터링된 탐색기" 아이콘을 클릭합니다.
+1. 활동 표시줄에서 "폴더 선택기" 아이콘을 클릭합니다.
 2. 뷰 상단의 검색 아이콘을 클릭하거나 명령 팔레트에서 "폴더 필터링" 명령을 실행합니다.
 3. 검색할 폴더 이름을 입력하면 일치하는 모든 폴더가 표시됩니다.
 
@@ -98,7 +98,7 @@ Distributed under the MIT License.
 ### 탐색기에서 직접 고정하기
 
 1. VS Code의 기본 파일 탐색기에서 폴더를 마우스 오른쪽 버튼으로 클릭합니다.
-2. 컨텍스트 메뉴에서 "폴더탐색기 고정하기"를 선택합니다.
+2. 컨텍스트 메뉴에서 "폴더 선택기에 고정하기"를 선택합니다.
 
 ## 설치 요구 사항
 

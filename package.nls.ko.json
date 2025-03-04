@@ -4,8 +4,8 @@
   "command.unpinFolder.title": "고정 해제",
   "command.moveUp.title": "위로 이동",
   "command.moveDown.title": "아래로 이동",
-  "command.pinFolderFromExplorer.title": "폴더탐색기 고정하기",
+  "command.pinFolderFromExplorer.title": "폴더 선택기에 고정하기",
   "command.reset.title": "초기화",
-  "viewsContainer.filteredExplorer.title": "필터링된 탐색기",
-  "view.filteredExplorer.title": "폴더"
+  "viewsContainer.folderSelector.title": "폴더 선택기",
+  "view.folderSelector.title": "폴더"
 }

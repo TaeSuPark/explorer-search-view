@@ -4,8 +4,8 @@
   "command.unpinFolder.title": "Unpin Folder",
   "command.moveUp.title": "Move Up",
   "command.moveDown.title": "Move Down",
-  "command.pinFolderFromExplorer.title": "Pin to Filtered Explorer",
+  "command.pinFolderFromExplorer.title": "Pin to Folder Selector",
   "command.reset.title": "Reset",
-  "viewsContainer.filteredExplorer.title": "Filtered Explorer",
-  "view.filteredExplorer.title": "Folders"
+  "viewsContainer.folderSelector.title": "Folder Selector",
+  "view.folderSelector.title": "Folders"
 }
